@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <link rel="stylesheet" href="style.css">
+    <title>Chat</title>
+</head>
+<body>
+
+    <div id="container" class="container blur">
+
+        <div id="messages" class="messages">
+        
+        </div>
+
+        <form id="form" class="form">
+            <input type="text" id="message_input" class="message_input">
+            <button type="submit" class="message_submit"><img src="./imgs/send.svg" alt="Send"></button>
+        </form>
+
+    </div>
+
+     <div id="modal" class="modal">
+
+        <form id="user_form" class="user_form">
+            <h1 class="modal_title">Qual o seu nome?</h1>
+
+            <input type="text" id="user_input" class="user_input">
+            <button class="user_submit" type="submit">Entrar</button>
+        </form>
+        
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chat.js"></script>
+
+</body>
+</html>
