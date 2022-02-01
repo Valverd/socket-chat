@@ -20,9 +20,9 @@ const messages = [];
 
 const io = socketIo(server);
 
-io.on('connection', async (socket) => {
+io.on('connection', (socket) => {
 
-    console.log("new connection");
+    console.log('new connection');
 
     socket.emit('last_messages', messages);
 
