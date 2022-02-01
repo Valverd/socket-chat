@@ -16,21 +16,23 @@ const server = app.listen(PORT, () => {
 });
 
 
-const messages = [];
+let messages = [];
 
 const io = socketIo(server);
 
 io.on('connection', (socket) => {
 
-    console.log('new connection');
-
-    socket.emit('last_messages', messages);
+    Messages.find().then(data => {
+        messages = data[0].msg;
+        socket.emit('last_messages', messages);
+    });
 
     socket.on('new_message', (data) => {
 
         messages.push(data);
-        io.emit('last_messages', messages);
-
+        Messages.findOneAndUpdate({}, { msg: messages }).then(() => {
+            io.emit('last_messages', messages);
+        })
     });
 
 });
