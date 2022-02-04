@@ -20,6 +20,13 @@ let messages = [];
 
 const io = socketIo(server);
 
+Messages.find().then(data => {
+    let newMsg = new Messages({ msg: [] });
+    if (!data[0]) {
+        newMsg.save();
+    };
+})
+
 io.on('connection', (socket) => {
 
     Messages.find().then(data => {
