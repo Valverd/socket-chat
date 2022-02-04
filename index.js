@@ -9,15 +9,6 @@ const Messages = require('./models/Messages');
 
 mongoose.connect(process.env.MONGO_CONNECTION_URL)
 
-app.use('/', express.static(path.join(__dirname, 'public')));
-
-const server = app.listen(PORT, () => {
-    console.log("running server");
-});
-
-const io = socketIo(server);
-
-
 Messages.find().then(data => {
     let newMsg = new Messages({ msg: [] });
     if (!data[0]) {
@@ -25,9 +16,17 @@ Messages.find().then(data => {
     };
 });
 
+app.use('/', express.static(path.join(__dirname, 'public')));
+
+const server = app.listen(PORT, () => {
+    console.log("running server");
+});
+
+
 
 let messages = [];
 
+const io = socketIo(server);
 
 io.on('connection', async (socket) => {
 
