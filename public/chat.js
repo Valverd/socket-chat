@@ -6,9 +6,19 @@ socket.on('last_messages', (messages) => {
 
     const screen_messages = document.getElementById('messages');
 
+
+
     let list_messages = '<ul>';
-    messages.forEach(data => {
-        list_messages += `<li><strong>${data.user}</strong>: ${data.msg}</li>`
+    messages.forEach((data, i) => {
+
+        let color = i % 2;
+        if (color === 1) {
+            color = 'odd';
+        } else {
+            color = 'even';
+        }
+
+        list_messages += `<li class="${color}"> <div class="msg_user"><p><strong>${data.user}: </strong>${data.msg}</p></div><p>${data.hours}</p></li>`
     });
     list_messages += '</ul>';
 
@@ -24,8 +34,23 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+
+        if (hours < 10) {
+            hours = '0' + hours;
+        }
+
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        };
+
+
         let input_message = document.getElementById('message_input');
-        socket.emit('new_message', {user: user, msg: input_message.value});
+        if (input_message.value != '') {
+            socket.emit('new_message', { user: user, msg: input_message.value, hours: `${hours}:${minutes}` });
+        }
         input_message.value = '';
     });
 
@@ -33,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         let input_user = document.getElementById('user_input');
-        
-        if(input_user.value === '') {
+
+        if (input_user.value === '') {
             return;
         }
         user = input_user.value;

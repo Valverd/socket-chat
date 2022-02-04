@@ -15,19 +15,21 @@ const server = app.listen(PORT, () => {
     console.log("running server");
 });
 
-
-let messages = [];
-
 const io = socketIo(server);
+
 
 Messages.find().then(data => {
     let newMsg = new Messages({ msg: [] });
     if (!data[0]) {
-        newMsg.save();
+        newMsg.save()
     };
-})
+});
 
-io.on('connection', (socket) => {
+
+let messages = [];
+
+
+io.on('connection', async (socket) => {
 
     Messages.find().then(data => {
         messages = data[0].msg;
