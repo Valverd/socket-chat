@@ -137,6 +137,17 @@ li{
     margin-right: 5px;
 }
 
+.msg_time{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.msg_date{
+    font-size: small;
+}
+
 .form{
     width: 100%;
     display: flex;

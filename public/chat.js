@@ -1,6 +1,8 @@
 const socket = io('/');
 
 let user = null;
+let date = new Date();
+
 
 socket.on('last_messages', (messages) => {
 
@@ -18,7 +20,18 @@ socket.on('last_messages', (messages) => {
             color = 'even';
         }
 
-        list_messages += `<li class="${color}"> <div class="msg_user"><p><strong>${data.user}: </strong>${data.msg}</p></div><p>${data.hours}</p></li>`
+        list_messages += `<li class="${color}">
+
+                             <div class="msg_user">
+                                <p><strong>${data.user}: </strong>${data.msg}</p>
+                             </div>
+
+                             <div class="msg_time">
+                                <p>${data.hours}</p>
+                                <p class="msg_date">${data.date}</p>
+                             </div>
+
+                          </li>`
     });
     list_messages += '</ul>';
 
@@ -34,22 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-
-        if (hours < 10) {
-            hours = '0' + hours;
-        }
-
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        };
-
-
         let input_message = document.getElementById('message_input');
         if (input_message.value != '') {
-            socket.emit('new_message', { user: user, msg: input_message.value, hours: `${hours}:${minutes}` });
+            socket.emit('new_message', { user: user, msg: input_message.value, hours: getHours(), date: getDate() });
         }
         input_message.value = '';
     });
@@ -68,3 +68,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+
+function getDate(){
+    let day = date.getDate();
+    let mounth = date.getMonth() + 1;
+
+    if(mounth < 10){
+        mounth = '0' + mounth;
+    }
+
+    if(day < 10){
+        day = '0' + day;
+    }
+
+    return day + '/' + mounth;
+};
+
+function getHours(){
+    let minutes = date.getMinutes();
+    let hours = date.getHours();
+
+    if (hours < 10) {
+        hours = '0' + hours;
+    }
+
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    };
+
+    return hours + ':' + minutes;
+};
